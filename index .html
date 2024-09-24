@@ -1,0 +1,82 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis</title>
+</head>
+<body>
+    <h1>Stock Analysis</h1>
+    <input type="text" id="symbolInput" placeholder="Enter stock symbol">
+    <button onclick="getQuote()">Get Quote</button>
+    <div id="result"></div>
+
+    <script>
+    async function getQuote() {
+        const symbol = document.getElementById('symbolInput').value;
+        const response = await fetch(`/quote/${symbol}`);
+        const data = await response.json();
+        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+    }
+    </script>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #result { margin-top: 20px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Stock Analysis</h1>
+    <input type="text" id="symbolInput" placeholder="Enter stock symbol">
+    <button onclick="getQuote()">Get Quote</button>
+    <div id="result"></div>
+
+    <script>
+    async function getQuote() {
+        const symbol = document.getElementById('symbolInput').value.toUpperCase();
+        if (!symbol) {
+            alert('Please enter a stock symbol');
+            return;
+        }
+        
+        document.getElementById('result').innerText = 'Loading...';
+        
+        try {
+            const response = await fetch(`/quote/${symbol}`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                const formattedData = formatQuoteData(data);
+                document.getElementById('result').innerText = formattedData;
+            } else {
+                document.getElementById('result').innerText = `Error: ${data.error}`;
+            }
+        } catch (error) {
+            document.getElementById('result').innerText = `Error: ${error.message}`;
+        }
+    }
+
+    function formatQuoteData(data) {
+        return `
+Symbol: ${data.symbol}
+Company Name: ${data.longName}
+Current Price: $${data.regularMarketPrice.toFixed(2)}
+Change: ${data.regularMarketChange.toFixed(2)} (${data.regularMarketChangePercent.toFixed(2)}%)
+Previous Close: $${data.regularMarketPreviousClose.toFixed(2)}
+Open: $${data.regularMarketOpen.toFixed(2)}
+Day's Range: $${data.regularMarketDayLow.toFixed(2)} - $${data.regularMarketDayHigh.toFixed(2)}
+52 Week Range: $${data.fiftyTwoWeekLow.toFixed(2)} - $${data.fiftyTwoWeekHigh.toFixed(2)}
+Volume: ${data.regularMarketVolume.toLocaleString()}
+        `;
+    }
+    </script>
+</body>
+</html>
