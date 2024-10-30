@@ -1,38 +1,84 @@
-.App {
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* Background color */
+}
+
+/* Main container */
+.app {
   text-align: center;
+  margin: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Form styles */
+form {
+  margin: 20px 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+input {
+  padding: 10px;
+  width: 200px; /* Default width */
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
   color: white;
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background-color: #0056b3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Quote display styles */
+.quote-display {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  input {
+    width: 100%; /* Full width on small screens */
+    margin-bottom: 10px; /* Space between input and button */
   }
-  to {
-    transform: rotate(360deg);
+
+  button {
+    width: 100%; /* Full width on small screens */
+  }
+
+  .quote-display {
+    padding: 15px; /* Add more padding on small screens */
+    margin: 0; /* Remove margin on small screens */
+    border-radius: 10px; /* More rounded corners */
+  }
+
+  h1 {
+    font-size: 24px; /* Adjust heading size for small screens */
+  }
+
+  h2 {
+    font-size: 20px; /* Adjust subheading size */
+  }
+}
+
+/* Larger screens */
+@media (min-width: 601px) {
+  input {
+    width: 200px; /* Default width on larger screens */
+  }
+
+  button {
+    width: auto; /* Auto width on larger screens */
   }
 }
