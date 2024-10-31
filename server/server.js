@@ -16,31 +16,96 @@ app.get('/', (req, res) => {
 });
 
 // Route for fetching stock quotes
+// app.get('/quote/:symbol', async (req, res) => {
+//     const symbol = req.params.symbol;
+//     console.log(`Fetching quote for symbol: ${symbol}`); // Log the requested symbol
+//     try {
+//         const quote = await yahooFinance.quote(symbol);
+//         console.log('Quote fetched:', quote); // Log the fetched quote
+//         res.json(quote);
+//     } catch (error) {
+//         console.error("Error fetching quote:", error); // Log the error
+//         res.status(500).json({ error: 'Failed to fetch quote' });
+//     }
+// });
+
+
+
 app.get('/quote/:symbol', async (req, res) => {
     const symbol = req.params.symbol;
     console.log(`Fetching quote for symbol: ${symbol}`); // Log the requested symbol
     try {
         const quote = await yahooFinance.quote(symbol);
         console.log('Quote fetched:', quote); // Log the fetched quote
-        res.json(quote);
+
+        // Extract the necessary financial metrics
+        const response = {
+            symbol: quote.symbol,
+            regularMarketPrice: quote.regularMarketPrice,
+            marketCap: quote.marketCap,
+            trailingPE: quote.trailingPE,
+            regularMarketChange: quote.regularMarketChange,
+            regularMarketChangePercent: quote.regularMarketChangePercent,
+            priceBook: quote.priceBook, // Price/Book ratio
+            priceSales: quote.priceSales, // Price/Sales ratio
+            pegRatio: quote.pegRatio, // PEG Ratio
+            fiftyDayAverage: quote.fiftyDayAverage, // 50-day moving average
+            twoHundredDayAverage: quote.twoHundredDayAverage, // 200-day moving average
+            profitMargin: quote.profitMargin, // Profit Margin
+            revenue: quote.revenue, // Revenue
+            ebitda: quote.ebitda, // EBITDA
+            eps: quote.eps, // Earnings Per Share
+            currentRatio: quote.currentRatio, // Current Ratio
+        };
+
+        res.json(response); // Return the structured response
     } catch (error) {
         console.error("Error fetching quote:", error); // Log the error
         res.status(500).json({ error: 'Failed to fetch quote' });
     }
 });
 
-// Route for fetching financial statements
-app.get('/financials/:symbol', async (req, res) => {
+// Endpoint to fetch the balance sheet
+app.get('/balance-sheet/:symbol', async (req, res) => {
     const symbol = req.params.symbol;
+    console.log(`Fetching balance sheet for symbol: ${symbol}`);
     try {
         const balanceSheet = await yahooFinance.balanceSheet(symbol);
-        const cashflowStatement = await yahooFinance.cashflowStatement(symbol);
-        res.json({ balanceSheet, cashflowStatement });
+        console.log('Balance sheet fetched:', balanceSheet);
+        res.json(balanceSheet);
     } catch (error) {
-        console.error("Error fetching financial data:", error); // Log the error
-        res.status(500).json({ error: 'Failed to fetch financial data' });
+        console.error("Error fetching balance sheet:", error);
+        res.status(500).json({ error: 'Failed to fetch balance sheet' });
     }
 });
+
+// Endpoint to fetch the cash flow statement
+app.get('/cash-flow/:symbol', async (req, res) => {
+    const symbol = req.params.symbol;
+    console.log(`Fetching cash flow for symbol: ${symbol}`);
+    try {
+        const cashFlow = await yahooFinance.cashFlow(symbol);
+        console.log('Cash flow fetched:', cashFlow);
+        res.json(cashFlow);
+    } catch (error) {
+        console.error("Error fetching cash flow:", error);
+        res.status(500).json({ error: 'Failed to fetch cash flow' });
+    }
+});
+
+
+// Route for fetching financial statements
+// app.get('/financials/:symbol', async (req, res) => {
+//     const symbol = req.params.symbol;
+//     try {
+//         const balanceSheet = await yahooFinance.balanceSheet(symbol);
+//         const cashflowStatement = await yahooFinance.cashflowStatement(symbol);
+//         res.json({ balanceSheet, cashflowStatement });
+//     } catch (error) {
+//         console.error("Error fetching financial data:", error); // Log the error
+//         res.status(500).json({ error: 'Failed to fetch financial data' });
+//     }
+// });
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port} and CORS is enabled`);
