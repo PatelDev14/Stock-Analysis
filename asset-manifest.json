@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Stock-Analysis/static/css/main.39ddc15f.css",
+    "main.js": "/Stock-Analysis/static/js/main.c6c61a3a.js",
+    "index.html": "/Stock-Analysis/index.html",
+    "main.39ddc15f.css.map": "/Stock-Analysis/static/css/main.39ddc15f.css.map",
+    "main.c6c61a3a.js.map": "/Stock-Analysis/static/js/main.c6c61a3a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.39ddc15f.css",
+    "static/js/main.c6c61a3a.js"
+  ]
+}
