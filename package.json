@@ -2,7 +2,7 @@
   "name": "stocks_analysis",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://PatelDev14.github.io/Stock-Analysis", 
+  "homepage": "https://PatelDev14.github.io/Stock-Analysis",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -13,18 +13,19 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "^5.0.1",
+    "semver": "^7.6.3",
+    "serve": "^14.2.4",
     "web-vitals": "^2.1.4",
     "yahoo-finance2": "^2.13.2"
   },
   "scripts": {
-  "start": "react-scripts start",
-  "build": "react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d build"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
-
   "engines": {
     "node": "18.x"
   },
