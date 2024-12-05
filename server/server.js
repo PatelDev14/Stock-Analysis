@@ -7,11 +7,11 @@ const app = express();
 const port = process.env.PORT || 3001;
 const FMP_API_KEY = process.env.FMP_API_KEY;
 
-// Debug: Ensure API key is loaded
-if (!FMP_API_KEY) {
-    console.error("FMP_API_KEY is missing! Please check your .env file.");
-    process.exit(1);
-}
+// // Debug: Ensure API key is loaded
+// if (!FMP_API_KEY) {
+//     console.error("FMP_API_KEY is missing! Please check your .env file.");
+//     process.exit(1);
+// }
 
 // Middleware
 app.use(cors());

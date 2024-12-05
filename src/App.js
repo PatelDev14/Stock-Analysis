@@ -8,33 +8,6 @@ const QuoteDisplay = ({ quote }) => {
     if (!quote) return null;
 
     return (
-        // <div className="quote-display">
-        //     <h2>Quote Information</h2>
-        //     <h3>{quote.name} ({quote.symbol})</h3>
-        //     <p><strong>Price:</strong> ${quote.price.toFixed(2)}</p>
-
-            
-        //     <p><strong>Market Cap:</strong> ${quote.marketCap.toLocaleString()}
-        //         <span className="tooltip-container">
-        //             <i className="info-icon">i</i>
-        //         <span className="tooltip-text">Market Cap is calculated as the product of outstanding shares and the current price.</span>
-        //         </span>
-        //     </p>
-
-        //     <p><strong>P/E Ratio:</strong> {quote.pe ? quote.pe.toFixed(2) : 'N/A'}</p>
-        //     <p><strong>EPS:</strong> ${quote.eps ? quote.eps.toFixed(2) : 'N/A'}</p>
-        //     <p><strong>52 Week Range:</strong> ${quote.yearLow.toFixed(2)} - ${quote.yearHigh.toFixed(2)}</p>
-        //     <p><strong>Day Range:</strong> ${quote.dayLow.toFixed(2)} - ${quote.dayHigh.toFixed(2)}</p>
-        //     <p><strong>Open:</strong> ${quote.open.toFixed(2)}</p>
-        //     <p><strong>Previous Close:</strong> ${quote.previousClose.toFixed(2)}</p>
-        //     <p><strong>Volume:</strong> {quote.volume.toLocaleString()}</p>
-        //     <p><strong>Average Volume:</strong> {quote.avgVolume.toLocaleString()}</p>
-        //     <p><strong>Change:</strong> ${quote.change.toFixed(2)} ({quote.changesPercentage.toFixed(2)}%)</p>
-        //     <p><strong>Exchange:</strong> {quote.exchange}</p>
-        //     <p><strong>Earnings Announcement:</strong> {new Date(quote.earningsAnnouncement).toLocaleString()}</p>
-        //     <p><strong>Shares Outstanding:</strong> {quote.sharesOutstanding.toLocaleString()}</p>
-        //     <p><strong>Timestamp:</strong> {new Date(quote.timestamp * 1000).toLocaleString()}</p>
-        // </div>
 
         <div className="quote-display">
     <h2>Quote Information</h2>
@@ -191,16 +164,34 @@ const App = () => {
     const [symbol, setSymbol] = useState('');
     const [quote, setQuote] = useState(null);
 
-    const fetchQuote = async () => {
+    // const fetchQuote = async () => {
+    //     try {
+    //         const response = await axios.get(`http://localhost:3001/quote/${symbol}`);
+    //         console.log("Quote response:", response.data);
+    //         setQuote(response.data);
+    //     } catch (error) {
+    //         console.error("Error fetching quote:", error);
+    //         setQuote(null);
+    //     }
+    // };
+
+    const fetchQuote = async (symbol) => {
         try {
-            const response = await axios.get(`http://localhost:3001/quote/${symbol}`);
-            console.log("Quote response:", response.data);
-            setQuote(response.data);
+            // Replace with your backend server URL
+            const response = await fetch(`https://stock-analysis-3ytp.onrender.com/${symbol}`);
+            const data = await response.json();
+    
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to fetch stock data');
+            }
+    
+            return data;
         } catch (error) {
-            console.error("Error fetching quote:", error);
-            setQuote(null);
+            console.error('Error fetching stock data:', error);
+            return null;
         }
     };
+    
     
 
     return (

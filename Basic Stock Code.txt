@@ -10,6 +10,8 @@ npm run deploy
 Pushing to github
 
 git status
+
+
 git add .
 git commit -m ""
 git push origin main
