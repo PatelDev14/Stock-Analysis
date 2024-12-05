@@ -166,7 +166,7 @@ const App = () => {
 
     const fetchQuote = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/quote/${symbol}`);
+            const response = await axios.get(`http://localhost:8080/quote/${symbol}`);
             console.log("Quote response:", response.data);
             setQuote(response.data);
         } catch (error) {

@@ -1,3 +1,7 @@
+Render BUild Command: npm install && npm run build
+
+Removed from package.json: "start": "react-scripts start",
+
 Backend: node server.js
 FrontEnd: npm start
 
