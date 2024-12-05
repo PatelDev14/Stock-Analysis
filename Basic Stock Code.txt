@@ -1,3 +1,23 @@
+Backend: node server.js
+FrontEnd: npm start
+
+
+Before pushing
+
+npm run build
+npm run deploy
+
+Pushing to github
+
+git status
+git add .
+git commit -m ""
+git push origin main
+
+
+
+
+
 *************************************App.css******************************************
 body {
   font-family: Arial, sans-serif;
@@ -237,4 +257,57 @@ body {
 }
 
 /* Additional styles can be added here */
-******************************************************************************************
+************************************************package.json**************************************
+{
+  "name": "stocks_analysis",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://PatelDev14.github.io/Stock-Analysis",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "^5.0.1",
+    "semver": "^7.6.3",
+    "serve": "^14.2.4",
+    "web-vitals": "^2.1.4",
+    "yahoo-finance2": "^2.13.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0"
+  }
+}

@@ -1,0 +1,9 @@
+for backend
+
+cd server
+
+node server.js
+
+for frontend
+
+npm start

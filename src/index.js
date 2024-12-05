@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css'; // Importing global styles
@@ -10,4 +11,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
