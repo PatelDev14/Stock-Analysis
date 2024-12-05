@@ -164,33 +164,33 @@ const App = () => {
     const [symbol, setSymbol] = useState('');
     const [quote, setQuote] = useState(null);
 
-    // const fetchQuote = async () => {
-    //     try {
-    //         const response = await axios.get(`http://localhost:3001/quote/${symbol}`);
-    //         console.log("Quote response:", response.data);
-    //         setQuote(response.data);
-    //     } catch (error) {
-    //         console.error("Error fetching quote:", error);
-    //         setQuote(null);
-    //     }
-    // };
-
-    const fetchQuote = async (symbol) => {
+    const fetchQuote = async () => {
         try {
-            // Replace with your backend server URL
-            const response = await fetch(`https://stock-analysis-3ytp.onrender.com/${symbol}`);
-            const data = await response.json();
-    
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to fetch stock data');
-            }
-    
-            return data;
+            const response = await axios.get(`http://localhost:3001/quote/${symbol}`);
+            console.log("Quote response:", response.data);
+            setQuote(response.data);
         } catch (error) {
-            console.error('Error fetching stock data:', error);
-            return null;
+            console.error("Error fetching quote:", error);
+            setQuote(null);
         }
     };
+
+    // const fetchQuote = async (symbol) => {
+    //     try {
+    //         // Replace with your backend server URL
+    //         const response = await fetch(`http://localhost:3001/${symbol}`);
+    //         const data = await response.json();
+    
+    //         if (!response.ok) {
+    //             throw new Error(data.error || 'Failed to fetch stock data');
+    //         }
+    
+    //         return data;
+    //     } catch (error) {
+    //         console.error('Error fetching stock data:', error);
+    //         return null;
+    //     }
+    // };
     
     
 

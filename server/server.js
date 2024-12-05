@@ -4,7 +4,9 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3001;
+// const port = process.env.PORT || 3001;
+const port = process.env.PORT || 8080;  // Or use just process.env.PORT
+
 const FMP_API_KEY = process.env.FMP_API_KEY;
 
 // // Debug: Ensure API key is loaded
