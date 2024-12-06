@@ -7,12 +7,23 @@ const app = express();
 // const port = process.env.PORT || 3001;
 const port = process.env.PORT || 8080;  // Or use just process.env.PORT
 
+
+const path = require('path');
+
 const FMP_API_KEY = process.env.FMP_API_KEY;
 
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from React app
+app.use(express.static(path.join(__dirname, '../build')));
+
+// For any route not defined in backend, send React app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
 // Root route
 app.get('/', (req, res) => {
