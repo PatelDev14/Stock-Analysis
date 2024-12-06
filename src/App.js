@@ -5,15 +5,16 @@ import './App.css';
 
 
 const QuoteDisplay = ({ quote }) => {
-    if (!quote) return null;
+    if (!quote || !quote.price) return null;
 
     return (
 
         <div className="quote-display">
-    <h2>Quote Information</h2>
-    <h3>{quote.name}</h3>
-    
-    <p><strong>Price:</strong> ${quote.price.toFixed(2)}</p>
+            <div className="quote-display">
+            <h2>Quote Information</h2>
+            <h3>{quote.name}</h3>
+            <p><strong>Price:</strong> ${quote.price.toFixed(2)}</p>
+        </div>
 
     <p>
         <strong>Market Cap:</strong> ${quote.marketCap.toLocaleString()}
@@ -160,20 +161,20 @@ const QuoteDisplay = ({ quote }) => {
 };
 
 
-const App = () => {
-    const [symbol, setSymbol] = useState('');
-    const [quote, setQuote] = useState(null);
+// const App = () => {
+//     const [symbol, setSymbol] = useState('');
+//     const [quote, setQuote] = useState(null);
 
-    const fetchQuote = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/quote/${symbol}`);
-            console.log("Quote response:", response.data);
-            setQuote(response.data);
-        } catch (error) {
-            console.error("Error fetching quote:", error);
-            setQuote(null);
-        }
-    };
+//     const fetchQuote = async () => {
+//         try {
+//             const response = await axios.get(`https://backend-stock-analysis.onrender.com/quote/${symbol}`);
+//             console.log("Quote response:", response.data);
+//             setQuote(response.data);
+//         } catch (error) {
+//             console.error("Error fetching quote:", error);
+//             setQuote(null);
+//         }
+//     };
 
     // const fetchQuote = async (symbol) => {
     //     try {
@@ -194,6 +195,47 @@ const App = () => {
     
     
 
+//     return (
+//         <div className="app">
+//             <h1>Stock Analysis</h1>
+//             <input
+//                 type="text"
+//                 value={symbol}
+//                 onChange={(e) => setSymbol(e.target.value)}
+//                 placeholder="Enter stock symbol"
+//             />
+//             <button onClick={fetchQuote}>Get Quote</button>
+
+//             <QuoteDisplay quote={quote} />
+//         </div>
+//     );
+// };
+
+// export default App;
+
+const App = () => {
+    const [symbol, setSymbol] = useState('');
+    const [quote, setQuote] = useState(null); // Default state is null
+    const [loading, setLoading] = useState(false); // Loading state for fetching quote
+
+    const fetchQuote = async () => {
+        if (!symbol) {
+            console.log("Please enter a stock symbol.");
+            return;
+        }
+
+        setLoading(true);  // Start loading
+        try {
+            const response = await axios.get(`https://backend-stock-analysis.onrender.com/api/quote/${symbol}`);
+            console.log("Quote response:", response.data);
+            setQuote(response.data); // Set quote data from the backend
+        } catch (error) {
+            console.error("Error fetching quote:", error);
+            setQuote(null); // Set null if error occurs
+        }
+        setLoading(false); // Stop loading
+    };
+
     return (
         <div className="app">
             <h1>Stock Analysis</h1>
@@ -203,8 +245,12 @@ const App = () => {
                 onChange={(e) => setSymbol(e.target.value)}
                 placeholder="Enter stock symbol"
             />
-            <button onClick={fetchQuote}>Get Quote</button>
+            <button onClick={fetchQuote} disabled={loading}>Get Quote</button>
 
+            {/* Show loading message when fetching data */}
+            {loading && <p>Loading...</p>}
+
+            {/* Display quote or error message */}
             <QuoteDisplay quote={quote} />
         </div>
     );
