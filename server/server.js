@@ -57,7 +57,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const path = require('path'); // Import path for serving static files
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -70,7 +70,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the frontend build folder
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '..', 'build')));
 
 // Root route (for API test)
 app.get('/api', (req, res) => {
@@ -105,8 +105,9 @@ app.get('/api/quote/:symbol', async (req, res) => {
 
 // Catch-all route to serve frontend files
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
+
 
 // Start the server
 app.listen(port, () => {
