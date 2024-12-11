@@ -16,6 +16,10 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
   max-width: 700px;
+  
+  
+  /* display: flex;
+  flex-direction: column; */
 }
 
 /* Form styles */
@@ -41,7 +45,7 @@ button {
   padding: 12px 16px;
   border: none;
   border-radius: 8px;
-  background-color: #28a745; /* Green background */
+  background-color: #3b6fdf; /* Green background */
   color: white;
   cursor: pointer;
   font-weight: bold;
@@ -49,7 +53,7 @@ button {
 }
 
 button:hover {
-  background-color: #218838; /* Darker green on hover */
+  background-color: #45a049; /* Darker green on hover */
 }
 
 button:active {
@@ -64,6 +68,8 @@ button:active {
   border-radius: 8px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  order: 1;
 }
 
 .quote-display p {
@@ -125,9 +131,48 @@ button:active {
   opacity: 1;
 }
 
+.popular-stocks {
+  order: 2;
+}
 
 
 /* Responsive styles */
+@media (max-width: 600px) {
+  input {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .quote-display {
+    padding: 15px;
+    margin: 0;
+    border-radius: 10px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+}
+
+/* @media (min-width: 600px) {
+  input {
+    width: 250px;
+  }
+
+  button {
+    width: auto;
+  }
+} */
+
+
 @media (max-width: 600px) {
   input {
     width: 100%;

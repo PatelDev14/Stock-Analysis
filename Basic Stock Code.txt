@@ -5,6 +5,10 @@ Removed from package.json: "start": "react-scripts start",
 Backend: node server.js
 FrontEnd: npm start
 
+For hosting: const response = await axios.get(`https://backend-stock-analysis.onrender.com/api/quote/${symbol}`);
+
+
+
 
 Before pushing
 
@@ -25,17 +29,24 @@ git push origin main
 
 
 *************************************App.css******************************************
+/* Global Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4; /* Background color */
+  background-color: #f4f4f4;
+  color: #333; /* Better contrast for text */
 }
 
 /* Main container */
 .app {
   text-align: center;
-  margin: 20px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  max-width: 700px;
 }
 
 /* Form styles */
@@ -44,69 +55,142 @@ form {
 }
 
 input {
-  padding: 10px;
-  width: 200px; /* Default width */
+  padding: 12px;
+  width: 250px; /* Increase input width */
   margin-right: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #007bff; /* Blue border on focus */
+  outline: none;
 }
 
 button {
-  padding: 10px;
+  padding: 12px 16px;
   border: none;
-  border-radius: 5px;
-  background-color: #007bff;
+  border-radius: 8px;
+  background-color: #28a745; /* Green background */
   color: white;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #218838; /* Darker green on hover */
+}
+
+button:active {
+  transform: scale(0.98); /* Slight shrink on click */
 }
 
 /* Quote display styles */
 .quote-display {
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 30px;
+  padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
+
+.quote-display p {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.quote-display strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.quote-display h2 {
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.info-icon {
+  display: inline-block;
+  background-color: #ccc;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  line-height: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 4px;
+  font-weight: bold;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 12px;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
 
 /* Responsive styles */
 @media (max-width: 600px) {
   input {
-    width: 100%; /* Full width on small screens */
-    margin-bottom: 10px; /* Space between input and button */
+    width: 100%;
+    margin-bottom: 15px;
   }
 
   button {
-    width: 100%; /* Full width on small screens */
+    width: 100%;
   }
 
   .quote-display {
-    padding: 15px; /* Add more padding on small screens */
-    margin: 0; /* Remove margin on small screens */
-    border-radius: 10px; /* More rounded corners */
+    padding: 15px;
+    margin: 0;
+    border-radius: 10px;
   }
 
   h1 {
-    font-size: 24px; /* Adjust heading size for small screens */
+    font-size: 24px;
   }
 
   h2 {
-    font-size: 20px; /* Adjust subheading size */
+    font-size: 20px;
   }
 }
 
-/* Larger screens */
-@media (min-width: 601px) {
+@media (min-width: 600px) {
   input {
-    width: 200px; /* Default width on larger screens */
+    width: 250px;
   }
 
   button {
-    width: auto; /* Auto width on larger screens */
+    width: auto;
   }
 }
 
@@ -114,39 +198,241 @@ button:hover {
 **************************************App.js**********************************************
 import React, { useState } from 'react';
 import axios from 'axios';
-import './App.css'; // Custom styles
+import './App.css'; 
+
+
 
 const QuoteDisplay = ({ quote }) => {
-    if (!quote) return null;
+    if (!quote || !quote.price) return null;
 
     return (
+
         <div className="quote-display">
+            <div className="quote-display">
             <h2>Quote Information</h2>
-            <p><strong>Symbol:</strong> {quote.symbol}</p>
-            <p><strong>Price:</strong> ${quote.regularMarketPrice.toFixed(2)}</p>
-            <p><strong>Market Cap:</strong> ${quote.marketCap ? quote.marketCap.toLocaleString() : 'N/A'}</p>
-            <p><strong>P/E Ratio:</strong> {quote.trailingPE ? quote.trailingPE.toFixed(2) : 'N/A'}</p>
-            <p><strong>Change:</strong> {quote.regularMarketChange} ({quote.regularMarketChangePercent}%)</p>
-            {/* Additional metrics can be added here */}
+            <h3>{quote.name}</h3>
+            <p><strong>Price:</strong> ${quote.price.toFixed(2)}</p>
         </div>
+
+    <p>
+        <strong>Market Cap:</strong> ${quote.marketCap.toLocaleString()}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                Market Cap is calculated as the product of outstanding shares and the current price.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>P/E Ratio:</strong> {quote.pe ? quote.pe.toFixed(2) : 'N/A'}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                P/E Ratio (Price-to-Earnings) measures a company's current share price relative to its earnings per share.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>EPS:</strong> ${quote.eps ? quote.eps.toFixed(2) : 'N/A'}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                EPS (Earnings Per Share) is the portion of a company's profit allocated to each outstanding share of common stock.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>52 Week Range:</strong> ${quote.yearLow.toFixed(2)} - ${quote.yearHigh.toFixed(2)}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The highest and lowest price of the stock in the past 52 weeks.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Day Range:</strong> ${quote.dayLow.toFixed(2)} - ${quote.dayHigh.toFixed(2)}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The highest and lowest price of the stock during the current trading day.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Open:</strong> ${quote.open.toFixed(2)}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The price at which the stock opened trading for the day.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Previous Close:</strong> ${quote.previousClose.toFixed(2)}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The stock's closing price from the previous trading day.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Volume:</strong> {quote.volume.toLocaleString()}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The total number of shares traded during the current trading session.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Average Volume:</strong> {quote.avgVolume.toLocaleString()}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The average number of shares traded per day over a specified period.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Change:</strong> ${quote.change.toFixed(2)} ({quote.changesPercentage.toFixed(2)}%)
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The difference between the current price and the previous close price, both in value and percentage.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Exchange:</strong> {quote.exchange}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The stock exchange where the company is listed, e.g., NYSE or NASDAQ.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Earnings Announcement:</strong> {new Date(quote.earningsAnnouncement).toLocaleString()}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The date and time when the company is scheduled to announce its financial earnings.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Shares Outstanding:</strong> {quote.sharesOutstanding.toLocaleString()}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The total number of shares of stock that are currently owned by shareholders.
+            </span>
+        </span>
+    </p>
+
+    <p>
+        <strong>Timestamp:</strong> {new Date(quote.timestamp * 1000).toLocaleString()}
+        <span className="tooltip-container">
+            <i className="info-icon">i</i>
+            <span className="tooltip-text">
+                The time when the stock data was last updated.
+            </span>
+        </span>
+    </p>
+</div>
+
     );
 };
 
+
+// const App = () => {
+//     const [symbol, setSymbol] = useState('');
+//     const [quote, setQuote] = useState(null);
+
+//     const fetchQuote = async () => {
+//         try {
+//             const response = await axios.get(`https://backend-stock-analysis.onrender.com/quote/${symbol}`);
+//             console.log("Quote response:", response.data);
+//             setQuote(response.data);
+//         } catch (error) {
+//             console.error("Error fetching quote:", error);
+//             setQuote(null);
+//         }
+//     };
+
+    // const fetchQuote = async (symbol) => {
+    //     try {
+    //         // Replace with your backend server URL
+    //         const response = await fetch(`http://localhost:3001/${symbol}`);
+    //         const data = await response.json();
+    
+    //         if (!response.ok) {
+    //             throw new Error(data.error || 'Failed to fetch stock data');
+    //         }
+    
+    //         return data;
+    //     } catch (error) {
+    //         console.error('Error fetching stock data:', error);
+    //         return null;
+    //     }
+    // };
+    
+    
+
+//     return (
+//         <div className="app">
+//             <h1>Stock Analysis</h1>
+//             <input
+//                 type="text"
+//                 value={symbol}
+//                 onChange={(e) => setSymbol(e.target.value)}
+//                 placeholder="Enter stock symbol"
+//             />
+//             <button onClick={fetchQuote}>Get Quote</button>
+
+//             <QuoteDisplay quote={quote} />
+//         </div>
+//     );
+// };
+
+// export default App;
+
 const App = () => {
     const [symbol, setSymbol] = useState('');
-    const [quote, setQuote] = useState(null);
+    const [quote, setQuote] = useState(null); // Default state is null
+    const [loading, setLoading] = useState(false); // Loading state for fetching quote
 
     const fetchQuote = async () => {
+        if (!symbol) {
+            console.log("Please enter a stock symbol.");
+            return;
+        }
+
+        setLoading(true);  // Start loading
         try {
-            const response = await axios.get(`http://localhost:3001/quote/${symbol}`);
+            const response = await axios.get(`https://backend-stock-analysis.onrender.com/api/quote/${symbol}`);
             console.log("Quote response:", response.data);
-            setQuote(response.data);
+            setQuote(response.data); // Set quote data from the backend
         } catch (error) {
             console.error("Error fetching quote:", error);
-            setQuote(null);
+            setQuote(null); // Set null if error occurs
         }
+        setLoading(false); // Stop loading
     };
-    
 
     return (
         <div className="app">
@@ -157,64 +443,134 @@ const App = () => {
                 onChange={(e) => setSymbol(e.target.value)}
                 placeholder="Enter stock symbol"
             />
-            <button onClick={fetchQuote}>Get Quote</button>
+            <button onClick={fetchQuote} disabled={loading}>Get Quote</button>
 
+            {/* Show loading message when fetching data */}
+            {loading && <p>Loading...</p>}
+
+            {/* Display quote or error message */}
             <QuoteDisplay quote={quote} />
         </div>
     );
 };
 
 export default App;
-
 ************************************server.js********************************************
+// const express = require('express');
+// const cors = require('cors');
+// const axios = require('axios');
+// require('dotenv').config();
+
+// const app = express();
+// // const port = process.env.PORT || 3001;
+// const port = process.env.PORT || 8080;  // Or use just process.env.PORT
+
+
+
+// const FMP_API_KEY = process.env.FMP_API_KEY;
+
+
+// // Middleware
+// app.use(cors());
+// app.use(express.json());
+
+
+// // Root route
+// app.get('/', (req, res) => {
+//     res.send('Welcome to the Stock Analysis API!');
+// });
+
+// // Fetch stock quotes
+// app.get('/quote/:symbol', async (req, res) => {
+//     const symbol = req.params.symbol;
+//     try {
+//         const apiUrl = `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${FMP_API_KEY}`;
+//         console.log(`Fetching data from: ${apiUrl}`);
+        
+//         const response = await axios.get(apiUrl);
+        
+//         if (!response.data || response.data.length === 0) {
+//             return res.status(404).json({ error: 'No data found for the given symbol' });
+//         }
+
+//         const quote = response.data[0];
+//         res.json(quote);
+
+//     } catch (error) {
+//         console.error("Error fetching quote:", error.message);
+//         if (error.response) {
+//             console.error("Error status:", error.response.status);
+//             console.error("Error data:", error.response.data);
+//         }
+//         res.status(500).json({ error: 'Failed to fetch quote', details: error.message });
+//     }
+// });
+
+// // Start the server
+// app.listen(port, () => {
+//     console.log(`Server running at http://localhost:${port}`);
+// });
+
+
 const express = require('express');
 const cors = require('cors');
-const yahooFinance = require('yahoo-finance2').default;
+const axios = require('axios');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3001; // Use environment variable or default to 3001
+const port = process.env.PORT || 8080;
 
-// Middleware for CORS and JSON parsing
+const FMP_API_KEY = process.env.FMP_API_KEY;
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Root route
-app.get('/', (req, res) => {
+// Serve static files from the frontend build folder
+app.use(express.static(path.join(__dirname, '..', 'build')));
+
+// Root route (for API test)
+app.get('/api', (req, res) => {
     res.send('Welcome to the Stock Analysis API!');
 });
 
-// Route for fetching stock quotes
-app.get('/quote/:symbol', async (req, res) => {
+// Fetch stock quotes
+app.get('/api/quote/:symbol', async (req, res) => {
     const symbol = req.params.symbol;
-    console.log(`Fetching quote for symbol: ${symbol}`); // Log the requested symbol
     try {
-        const quote = await yahooFinance.quote(symbol);
-        console.log('Quote fetched:', quote); // Log the fetched quote
+        const apiUrl = `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${FMP_API_KEY}`;
+        console.log(`Fetching data from: ${apiUrl}`);
+        
+        const response = await axios.get(apiUrl);
+        
+        if (!response.data || response.data.length === 0) {
+            return res.status(404).json({ error: 'No data found for the given symbol' });
+        }
+
+        const quote = response.data[0];
         res.json(quote);
+
     } catch (error) {
-        console.error("Error fetching quote:", error); // Log the error
-        res.status(500).json({ error: 'Failed to fetch quote' });
+        console.error("Error fetching quote:", error.message);
+        if (error.response) {
+            console.error("Error status:", error.response.status);
+            console.error("Error data:", error.response.data);
+        }
+        res.status(500).json({ error: 'Failed to fetch quote', details: error.message });
     }
 });
 
-// Route for fetching financial statements
-app.get('/financials/:symbol', async (req, res) => {
-    const symbol = req.params.symbol;
-    try {
-        const balanceSheet = await yahooFinance.balanceSheet(symbol);
-        const cashflowStatement = await yahooFinance.cashflowStatement(symbol);
-        res.json({ balanceSheet, cashflowStatement });
-    } catch (error) {
-        console.error("Error fetching financial data:", error); // Log the error
-        res.status(500).json({ error: 'Failed to fetch financial data' });
-    }
+// Catch-all route to serve frontend files
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
+
+// Start the server
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port} and CORS is enabled`);
+    console.log(`Server running at http://localhost:${port}`);
 });
-
 ************************************index.js**********************************************
 
 import React from 'react';
@@ -268,27 +624,29 @@ body {
   "name": "stocks_analysis",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://PatelDev14.github.io/Stock-Analysis",
+  "homepage": "https://stock-analysis-3ytp.onrender.com/",
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.7",
+    "axios": "^1.7.9",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "^5.0.1",
     "semver": "^7.6.3",
     "serve": "^14.2.4",
-    "web-vitals": "^2.1.4",
-    "yahoo-finance2": "^2.13.2"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "server": "node server/server.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
